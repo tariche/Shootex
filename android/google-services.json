@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "706221317437",
+    "firebase_url": "https://shootex-2daf8.firebaseio.com",
+    "project_id": "shootex-2daf8",
+    "storage_bucket": "shootex-2daf8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706221317437:android:433c076b7b47beab",
+        "android_client_info": {
+          "package_name": "com.funnymon.game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706221317437-r7uml38enjdmur4h5rimro0uhmj2g7ep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.funnymon.game",
+            "certificate_hash": "0d1843b07c6e90c540d1248779080a513d240d93"
+          }
+        },
+        {
+          "client_id": "706221317437-bnvm1ir2rulbv176lmn1322dj5ui8p18.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZQKMUXxbJrtaJtbOXa8qh9VmIUPyVqAs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "706221317437-bnvm1ir2rulbv176lmn1322dj5ui8p18.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
