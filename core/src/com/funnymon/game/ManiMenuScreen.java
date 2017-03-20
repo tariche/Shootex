@@ -37,9 +37,15 @@ class ManiMenuScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(Assets.background, 0, 0);
+        game.batch.draw(Assets.airGun, 152, 0);
+        game.batch.draw(Assets.cactus, 340, 300);
+        game.batch.draw(Assets.cloud, Shootex.cloud1.x, Shootex.cloud1.y);
+        game.batch.draw(Assets.cloud, Shootex.cloud2.x, Shootex.cloud2.y);
+        game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.x, Shootex.hotAirBallon.y);
+//        game.batch.draw(Assets.hotAirBaloon, 64, 480);
         game.batch.draw(Assets.name, 130, 480);
         game.batch.draw(Assets.mainmenu, 100, 210);
-        if (game.soundEnabled) {
+        if (Settings.soundEnabled) {
             game.batch.draw(Assets.buttons, 0, 719, 80, 0, 81, 81);
         } else {
             game.batch.draw(Assets.buttons, 0, 719, 0, 0, 81, 81);
@@ -47,14 +53,19 @@ class ManiMenuScreen implements Screen {
 
         game.batch.end();
 
+        Shootex.cloud1.move();
+        Shootex.cloud2.move();
+        Shootex.hotAirBallon.move();
+
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
 
             if (touchPos.x < 80 && touchPos.y > 719) {
-                game.soundEnabled = !game.soundEnabled;
-                if (game.soundEnabled) {
+                Settings.soundEnabled = !Settings.soundEnabled;
+                Settings.save();
+                if (Settings.soundEnabled) {
                     Assets.shotSnd.play(1);
                 }
             }
@@ -62,6 +73,7 @@ class ManiMenuScreen implements Screen {
             if (touchPos.x > 100 && touchPos.x < 400) {
                 if (touchPos.y > 339 && touchPos.y < 402) {
                     System.out.println("Start game");
+                    Shootex.myRequestHandler.showAds(false);
                     game.setScreen(new GameScreen(game));
                     dispose();
                 }

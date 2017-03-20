@@ -23,12 +23,16 @@ class LoadScreen implements Screen {
         Assets.name = new Texture(Gdx.files.internal("name.png"));
         Assets.missed = new Texture(Gdx.files.internal("missed.png"));
         Assets.rifle = new Texture(Gdx.files.internal("rifle.png"));
+        Assets.airGun = new Texture(Gdx.files.internal("airGun.png"));
+        Assets.hotAirBaloon = new Texture(Gdx.files.internal("hotAirBaloon.png"));
+        Assets.cloud = new Texture(Gdx.files.internal("cloud.png"));
+        Assets.cactus = new Texture(Gdx.files.internal("cactus.png"));
         Assets.target = new Texture(Gdx.files.internal("target.png"));
         Assets.bullet = new Texture(Gdx.files.internal("bullet.png"));
         Assets.targets = new TextureAtlas(Gdx.files.internal("target/targets.atlas"));
         Assets.shotSnd = Gdx.audio.newSound(Gdx.files.internal("shotSnd.ogg"));
         Assets.targetSnd = Gdx.audio.newSound(Gdx.files.internal("targetSnd.ogg"));
-//        Settings.load(game.getFileIO());
+        Settings.load();
 
     }
 

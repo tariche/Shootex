@@ -35,6 +35,8 @@ public class World {
             Bullet bullet = bullets.get(i);
             if (bullet.y > 820) {
                 gameOver = true;
+                updateScore();
+                Shootex.myRequestHandler.showAds(true);
             }
             if (targetQue.checkCollision(bullet)) {
                 score += targetQue.success;
@@ -48,7 +50,15 @@ public class World {
 
         if (targetQue.targetEcsaped()) {
             gameOver = true;
+            updateScore();
+            Shootex.myRequestHandler.showAds(true);
         }
 
+    }
+
+    public void updateScore() {
+        if (Settings.highScore < score) {
+            Settings.highScore = score;
+        }
     }
 }

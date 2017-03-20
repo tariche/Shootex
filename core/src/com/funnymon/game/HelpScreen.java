@@ -41,6 +41,9 @@ class HelpScreen implements Screen {
 
         game.batch.end();
 
+        Shootex.cloud1.move();
+        Shootex.cloud2.move();
+
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);

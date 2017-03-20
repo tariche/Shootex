@@ -15,6 +15,10 @@ public class Assets {
     public static Texture mainmenu;
     public static Texture name;
     public static Texture rifle;
+    public static Texture airGun;
+    public static Texture hotAirBaloon;
+    public static Texture cloud;
+    public static Texture cactus;
     public static Texture target;
     public static TextureAtlas targets;
     public static Texture bullet;

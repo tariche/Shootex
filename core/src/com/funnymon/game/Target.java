@@ -11,16 +11,15 @@ public class Target {
     public boolean isVisible;
     boolean inRange, isShot;
     Rectangle r;
-    int current;
+    float elapsedTime = 0f;
 
     public Target(int x, boolean isVisible) {
         this.x = x;
-        this.y = 705;
+        this.y = 710;
         this.isVisible = isVisible;
         inRange = false;
         isShot = false;
         r = new Rectangle(0, 0, 0, 0);
-        current = 0;
     }
 
     public void setIsVisible(boolean isVisible) {

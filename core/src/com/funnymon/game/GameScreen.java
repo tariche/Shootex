@@ -10,38 +10,40 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.List;
-
 /**
  * Created by tarik on 3/13/17.
  */
 
 class GameScreen implements Screen {
     final Shootex game;
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
 
-    enum GameStatus {
+    private enum GameStatus {
         Running,
-        GameOver;
+        GameOver
     }
-    GameStatus status = GameStatus.Running;
+    private GameStatus status = GameStatus.Running;
 
-    World world;
-    int oldScore = 0;
-    String printScore = "0";
-    String textScore = "SCORE: ";
-    int textScoreHeight;
+    private World world;
+    private int oldScore = 0;
+    private String printScore = "0";
+    private static final String TEXTSCORE = "SCORE: ";
+    private static final String TEXTHIGHSCORE = "HIGH SCORE: ";
     private TextureAtlas textureAtlas;
-    private Animation animation;
-    private float elapsedTime = 0;
+    private Animation<TextureRegion> animation;
+    private int letterHight;
+    private boolean fire;
 
-    public GameScreen(final Shootex game) {
+    GameScreen(final Shootex game) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.WIDTH, game.HEIGHT);
+        camera.setToOrtho(false, Shootex.WIDTH, Shootex.HEIGHT);
         world = new World();
         textureAtlas = new TextureAtlas(Gdx.files.internal("target/targets.atlas"));
-        animation = new Animation(1/20f, textureAtlas.getRegions());
+        animation = new Animation<TextureRegion>(0.05f, textureAtlas.getRegions());
+        letterHight = (int) game.font.getCapHeight();
+        fire = false;
+
     }
 
     @Override
@@ -61,14 +63,28 @@ class GameScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(Assets.background, 0, 0);
+        if (fire) {
+            game.batch.draw(Assets.airGun, 152, 0, 176, 215);
+            fire = false;
+        } else {
+            game.batch.draw(Assets.airGun, 152, 0);
+        }
+        game.batch.draw(Assets.cactus, 340, 300);
+        game.batch.draw(Assets.cloud, Shootex.cloud1.x, Shootex.cloud1.y);
+        game.batch.draw(Assets.cloud, Shootex.cloud2.x, Shootex.cloud2.y);
+        game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.x, Shootex.hotAirBallon.y);
 
         if (status == GameStatus.GameOver) {
             drawGameOver();
         } else {
-            drawRunning();
+            drawRunning(delta);
         }
 
         game.batch.end();
+
+        Shootex.cloud1.move();
+        Shootex.cloud2.move();
+        Shootex.hotAirBallon.move();
 
         Vector3 touchPos = new Vector3();
         if (Gdx.input.justTouched()) {
@@ -88,8 +104,9 @@ class GameScreen implements Screen {
     private void updateRunning(Vector3 touchPos, float delta) {
         if (touchPos.x > 152 && touchPos.x < 330 && touchPos.y < 200) {
             Gdx.input.vibrate(100);
-            if (game.soundEnabled) {
+            if (Settings.soundEnabled) {
                 Assets.shotSnd.play(1);
+                fire = true;
             }
             world.shot = true;
         }
@@ -103,46 +120,40 @@ class GameScreen implements Screen {
 
         if (oldScore != world.score) {
             oldScore = world.score;
-            if (game.soundEnabled) {
-                Assets.targetSnd.play(1);
-            }
         }
     }
 
     private void updateGameOver(Vector3 touchPos) {
-        /*if (touchPos.x > 81 && touchPos.y < 81) {
-            game.soundEnabled = !game.soundEnabled;
-            if (game.soundEnabled) {
-                Assets.shotSnd.play(1);
-            }
-        }*/
-        if (touchPos.x > 165 && touchPos.x < 315) {
+         if (touchPos.x > 165 && touchPos.x < 315) {
             if (touchPos.y > 342 && touchPos.y < 400) {
+                Shootex.myRequestHandler.showAds(false);
                 game.setScreen(new GameScreen(game));
             }
             if (touchPos.y > 284 && touchPos.y < 341) {
+                Settings.save();
                 game.setScreen(new HelpScreen(game));
             }
             if (touchPos.y > 226 && touchPos.y < 283) {
+                Settings.save();
                 game.setScreen(new ManiMenuScreen(game));
             }
         }
     }
 
 
-    private void drawRunning() {
+    private void drawRunning(float delta) {
         int len = world.targetQue.targets.size();
         for (int i = 0; i < len; i++) {
             Target target = world.targetQue.targets.get(i);
             if (target.isVisible) {
                 game.batch.draw(Assets.target, target.x, target.y);
             }
-            if (target.isShot && elapsedTime < 4/10f) {
-                elapsedTime += Gdx.graphics.getDeltaTime();
-                game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, false), target.x, target.y);
+            if (target.isShot) {
+                target.elapsedTime += delta;
+                game.batch.draw(animation.getKeyFrame(target.elapsedTime, false), target.x, target.y);
             }
-            if (elapsedTime > 4/20f) {
-                elapsedTime = 0;
+            if (animation.isAnimationFinished(target.elapsedTime)) {
+                target.elapsedTime = 0;
                 target.isShot = false;
             }
         }
@@ -159,13 +170,12 @@ class GameScreen implements Screen {
     }
 
     private void drawCurrentScore() {
-//        game.font.draw(game.batch, textScore, 20, 780);
         if (Integer.parseInt(printScore) != oldScore) {
             printScore = "" + oldScore;
         }
         game.font.setColor(Color.BLACK);
-        game.font.draw(game.batch, textScore + printScore, 20, 780);
-//        g.drawText(printScore, 20, 10 + 2 * textScoreHeight, paint);
+        game.font.draw(game.batch, TEXTSCORE + printScore, 20, 780);
+        game.font.draw(game.batch, TEXTHIGHSCORE + Settings.highScore, 20 , 775 - letterHight);
     }
 
     private void drawGameOver() {
@@ -180,7 +190,7 @@ class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        Settings.save();
     }
 
     @Override

@@ -24,11 +24,10 @@ public class TargetQue {
     public void move(float deltaTime) {
         for (int i = 0; i < 10; i++) {
             Target target = targets.get(i);
-            target.x -= 70 * deltaTime;
-            target.r.set(target.x, 720, 46, 14);
+            target.x -= 50 * deltaTime;
+            target.r.set(target.x, 725, 46, 14);
             if (target.x == 0) {
                 target.x = 480;
-                target.current = 0;
                 target.isShot = false;
                 target.isVisible = r.nextBoolean();
             }
@@ -37,21 +36,21 @@ public class TargetQue {
                 target.inRange = true;
             }
 
-            if (target.isShot) {
-//                ++target.current;
-//                if (target.current == 4) {
-//                    target.current = 0;
+            /*if (target.isShot) {
+                ++target.current;
+                if (target.current == 4) {
+                    target.current = 0;
                     target.isVisible = false;
                     target.isShot = true;
-//                }
-            }
+                }
+            }*/
         }
     }
 
     public boolean targetEcsaped() {
         for (int i = 0; i < 10; i++) {
             Target target = targets.get(i);
-            if ((target.x + 48) < 200 && target.isVisible) {
+            if (target.isVisible && (target.x + 48) < 200) {
                 return true;
             }
         }
@@ -63,8 +62,12 @@ public class TargetQue {
             Target target = targets.get(i);
             if (target.inRange) {
                 if (target.r.overlaps(bullet.r)) {
-                    target.inRange = false;
                     target.isShot = true;
+                    if (Settings.soundEnabled) {
+                        Assets.targetSnd.play(1);
+                    }
+                    target.isVisible = false;
+                    target.inRange = false;
                     shot(target, bullet);
                     return true;
                 }

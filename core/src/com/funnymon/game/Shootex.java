@@ -9,12 +9,23 @@ public class Shootex extends Game {
     public static final int WIDTH = 480;
     public static final int HEIGHT = 800;
     public static final String title = "Shootex";
+    public static RandomlyMovingObject cloud1;
+    public static RandomlyMovingObject cloud2;
+    public static RandomlyMovingObject hotAirBallon;
 
-    public static boolean soundEnabled = true;
-
+//    public static boolean soundEnabled = true;
 
     public SpriteBatch batch;
     public BitmapFont font;
+
+    public static IActivityRequestHandler myRequestHandler;
+
+    public Shootex(IActivityRequestHandler handler) {
+        myRequestHandler = handler;
+        cloud1 = new RandomlyMovingObject(50f, 500f);
+        cloud2 = new RandomlyMovingObject(240f, 570f);
+        hotAirBallon = new RandomlyMovingObject(64f, 480f, 200);
+    }
 
     @Override
     public void create() {
