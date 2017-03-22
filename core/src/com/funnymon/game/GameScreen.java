@@ -28,11 +28,14 @@ class GameScreen implements Screen {
     private int oldScore = 0;
     private String printScore = "0";
     private static final String TEXTSCORE = "SCORE: ";
-    private static final String TEXTHIGHSCORE = "HIGH SCORE: ";
+    private static final String TEXTHIGHSCORE = "TOP SCORE: ";
     private TextureAtlas textureAtlas;
     private Animation<TextureRegion> animation;
     private int letterHight;
     private boolean fire;
+
+    private float scoreCount;
+    private String gameOverScore = new String();
 
     GameScreen(final Shootex game) {
         this.game = game;
@@ -43,7 +46,7 @@ class GameScreen implements Screen {
         animation = new Animation<TextureRegion>(0.05f, textureAtlas.getRegions());
         letterHight = (int) game.font.getCapHeight();
         fire = false;
-
+        scoreCount = 0;
     }
 
     @Override
@@ -75,7 +78,7 @@ class GameScreen implements Screen {
         game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.x, Shootex.hotAirBallon.y);
 
         if (status == GameStatus.GameOver) {
-            drawGameOver();
+            drawGameOver(delta);
         } else {
             drawRunning(delta);
         }
@@ -142,7 +145,7 @@ class GameScreen implements Screen {
 
 
     private void drawRunning(float delta) {
-        int len = world.targetQue.targets.size();
+        int len = world.targetQue.targets.size(); //TODO move to mebers and intiate once
         for (int i = 0; i < len; i++) {
             Target target = world.targetQue.targets.get(i);
             if (target.isVisible) {
@@ -178,9 +181,16 @@ class GameScreen implements Screen {
         game.font.draw(game.batch, TEXTHIGHSCORE + Settings.highScore, 20 , 775 - letterHight);
     }
 
-    private void drawGameOver() {
+    private void drawGameOver(float delta) {
+        drawFinalScore(delta);
         game.batch.draw(Assets.missed, 145, 536);
         game.batch.draw(Assets.gameover, 165, 226);
+    }
+
+    public void drawFinalScore(float delta) {
+        scoreCount = Math.min((scoreCount + delta*100), (float)oldScore);
+        gameOverScore = String.format(TEXTSCORE + "%04d", (int)scoreCount);
+        game.font.draw(game.batch, gameOverScore, Gdx.graphics.getWidth()/2, 700);
     }
 
     @Override

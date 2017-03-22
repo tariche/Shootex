@@ -77,18 +77,13 @@ public class TargetQue {
     }
 
     private void shot(Target target, Bullet bullet) {
-        success = 0;
+        success = 1;
         int targetX = target.x;
-        if (bullet.x > targetX - 1 && bullet.x < targetX + 46 + 1) { // testiraj
-            success += 1;
             if (bullet.x > targetX + 8 && bullet.x < targetX + 38) {
                 success += 1;
                 if (bullet.x > targetX + 16 && bullet.x < targetX + 30) {
                     success += 1;
                 }
             }
-//            target.isShot = true;
-//            target.isVisible = false;
-        }
     }
 }

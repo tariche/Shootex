@@ -2,6 +2,7 @@ package com.funnymon.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -12,8 +13,6 @@ public class Shootex extends Game {
     public static RandomlyMovingObject cloud1;
     public static RandomlyMovingObject cloud2;
     public static RandomlyMovingObject hotAirBallon;
-
-//    public static boolean soundEnabled = true;
 
     public SpriteBatch batch;
     public BitmapFont font;
