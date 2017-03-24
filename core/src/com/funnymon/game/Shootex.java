@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class Shootex extends Game {
     public static final int WIDTH = 480;
@@ -15,7 +16,10 @@ public class Shootex extends Game {
     public static RandomlyMovingObject hotAirBallon;
 
     public SpriteBatch batch;
-    public BitmapFont font;
+//    public BitmapFont font;
+    public BitmapFont font30;
+    public BitmapFont font40;
+    public FreeTypeFontGenerator generator;
 
     public static IActivityRequestHandler myRequestHandler;
 
@@ -24,12 +28,24 @@ public class Shootex extends Game {
         cloud1 = new RandomlyMovingObject(50f, 500f);
         cloud2 = new RandomlyMovingObject(240f, 570f);
         hotAirBallon = new RandomlyMovingObject(64f, 480f, 200);
+
     }
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        font = new BitmapFont(Gdx.files.internal("font/arial-15.fnt"),false);
+//        font = new BitmapFont(Gdx.files.internal("font/arial-15.fnt"),false);
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/opensans.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.color = Color.WHITE;
+        parameter.borderWidth = 1;
+        parameter.shadowOffsetX = 3;
+        parameter.shadowOffsetY = 3;
+        parameter.shadowColor = new Color(0, 0.5f, 0, 0.75f);
+        parameter.size = 20;
+        font30 = generator.generateFont(parameter);
+        parameter.size = 40;
+        font40 = generator.generateFont(parameter);
         this.setScreen(new LoadScreen(this));
     }
 
@@ -39,7 +55,10 @@ public class Shootex extends Game {
 
     public void dispose() {
         batch.dispose();
-        font.dispose();
+//        font.dispose();
+        generator.dispose();
+        font30.dispose();
+        font40.dispose();
     }
 }
 

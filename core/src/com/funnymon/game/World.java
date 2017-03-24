@@ -1,6 +1,7 @@
 package com.funnymon.game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,10 +21,6 @@ public class World {
     }
 
     public void update(float deltaTime) {
-        if (gameOver) {
-            return;
-        }
-
         targetQue.move(deltaTime);
 
         if (shot) {
@@ -31,8 +28,9 @@ public class World {
             bullets.add(new Bullet());
         }
 
-        for (int i = 0; i < bullets.size(); i++) {
-            Bullet bullet = bullets.get(i);
+        Iterator<Bullet> iter = bullets.iterator();
+        while (iter.hasNext()) {
+            Bullet bullet = iter.next();
             if (bullet.y > 820) {
                 gameOver = true;
                 updateScore();
@@ -45,7 +43,7 @@ public class World {
             if (bullet.visible) {
                 bullet.update(deltaTime);
             } else
-                bullets.remove(i);
+                iter.remove();
         }
 
         if (targetQue.targetEcsaped()) {

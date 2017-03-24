@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -41,7 +42,6 @@ class HighScoreScreen implements Screen {
         game.batch.draw(Assets.cloud, Shootex.cloud2.x, Shootex.cloud2.y);
         game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.x, Shootex.hotAirBallon.y);
         game.batch.draw(Assets.buttons, 0, 719, 80, 80, 81, 81);
-        game.font.draw(game.batch, "High scores list", 100, 274);
 
         game.batch.end();
 

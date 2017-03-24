@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+
+import java.util.Iterator;
 
 /**
  * Created by tarik on 3/13/17.
@@ -26,6 +29,7 @@ class GameScreen implements Screen {
 
     private World world;
     private int oldScore = 0;
+    int queueLen;
     private String printScore = "0";
     private static final String TEXTSCORE = "SCORE: ";
     private static final String TEXTHIGHSCORE = "TOP SCORE: ";
@@ -42,9 +46,10 @@ class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Shootex.WIDTH, Shootex.HEIGHT);
         world = new World();
+        queueLen = world.targetQue.targets.size();
         textureAtlas = new TextureAtlas(Gdx.files.internal("target/targets.atlas"));
         animation = new Animation<TextureRegion>(0.05f, textureAtlas.getRegions());
-        letterHight = (int) game.font.getCapHeight();
+        letterHight = (int) game.font30.getCapHeight();
         fire = false;
         scoreCount = 0;
     }
@@ -145,9 +150,9 @@ class GameScreen implements Screen {
 
 
     private void drawRunning(float delta) {
-        int len = world.targetQue.targets.size(); //TODO move to mebers and intiate once
-        for (int i = 0; i < len; i++) {
-            Target target = world.targetQue.targets.get(i);
+        Iterator<Target> iter = world.targetQue.targets.iterator();
+        while (iter.hasNext()) {
+            Target target = iter.next();
             if (target.isVisible) {
                 game.batch.draw(Assets.target, target.x, target.y);
             }
@@ -176,21 +181,23 @@ class GameScreen implements Screen {
         if (Integer.parseInt(printScore) != oldScore) {
             printScore = "" + oldScore;
         }
-        game.font.setColor(Color.BLACK);
-        game.font.draw(game.batch, TEXTSCORE + printScore, 20, 780);
-        game.font.draw(game.batch, TEXTHIGHSCORE + Settings.highScore, 20 , 775 - letterHight);
+        game.font30.setColor(Color.YELLOW);
+        game.font30.draw(game.batch, String.format("%04d", Settings.highScore), 20 , 780);
+        game.font40.draw(game.batch, printScore, 20, 770 - letterHight);
     }
 
     private void drawGameOver(float delta) {
         drawFinalScore(delta);
-        game.batch.draw(Assets.missed, 145, 536);
+        game.batch.draw(Assets.missed, 145, 500);
         game.batch.draw(Assets.gameover, 165, 226);
     }
 
     public void drawFinalScore(float delta) {
         scoreCount = Math.min((scoreCount + delta*100), (float)oldScore);
-        gameOverScore = String.format(TEXTSCORE + "%04d", (int)scoreCount);
-        game.font.draw(game.batch, gameOverScore, Gdx.graphics.getWidth()/2, 700);
+        gameOverScore = String.format("%04d", (int)scoreCount);
+        GlyphLayout layout = new GlyphLayout(game.font40, gameOverScore);
+        int positionX = game.WIDTH/2-(int)(layout.width/2);
+        game.font40.draw(game.batch, gameOverScore, positionX, 700);
     }
 
     @Override
