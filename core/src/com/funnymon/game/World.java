@@ -15,6 +15,7 @@ public class World {
     public boolean gameOver = false;
     public boolean shot = false;
     public int score = 0;
+//    public int speedFactor = 0;
 
     public World() {
         targetQue = new TargetQue();
@@ -39,6 +40,10 @@ public class World {
             if (targetQue.checkCollision(bullet)) {
                 score += targetQue.success;
                 bullet.visible = false;
+//                if (score/10 > speedFactor) {
+//                    targetQue.speedUpTargets();
+//                    ++speedFactor;
+//                }
             }
             if (bullet.visible) {
                 bullet.update(deltaTime);

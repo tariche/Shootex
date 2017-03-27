@@ -11,6 +11,7 @@ import java.util.Random;
  */
 
 public class TargetQue {
+    private int TARGETSPEED = 60;
     List<Target> targets = new ArrayList<Target>(10);
     Random r = new Random();
     int success = 0;
@@ -24,7 +25,7 @@ public class TargetQue {
     public void move(float deltaTime) {
         for (int i = 0; i < 10; i++) {
             Target target = targets.get(i);
-            target.x -= 50 * deltaTime;
+            target.x -= TARGETSPEED * deltaTime;
             target.r.set(target.x, 725, 46, 14);
             if (target.x == 0) {
                 target.x = 480;
@@ -35,15 +36,6 @@ public class TargetQue {
             if (target.isVisible && target.x < 300 && !target.isShot) {
                 target.inRange = true;
             }
-
-            /*if (target.isShot) {
-                ++target.current;
-                if (target.current == 4) {
-                    target.current = 0;
-                    target.isVisible = false;
-                    target.isShot = true;
-                }
-            }*/
         }
     }
 
@@ -86,4 +78,11 @@ public class TargetQue {
                 }
             }
     }
+
+//    public void speedUpTargets() {
+//        if (TARGETSPEED < 60) {
+//            TARGETSPEED += 2;
+//            System.out.println(TARGETSPEED);
+//        }
+//    }
 }

@@ -32,6 +32,7 @@ public class RandomlyMovingObject {
         deltaTime = 0f;
         calculateDirection = 0f;
         directionX = 0f;
+        directionY = 0f;
     }
 
     public RandomlyMovingObject(float x, float y, int movementBound){
@@ -45,6 +46,7 @@ public class RandomlyMovingObject {
         deltaTime = 0f;
         calculateDirection = 0f;
         directionX = 0f;
+        directionY = 0f;
     }
 
     public void move() {
@@ -55,11 +57,11 @@ public class RandomlyMovingObject {
             calculateDirection = 0;
             directionX = (r.nextInt(2) == 0) ? -MOVEMENT : MOVEMENT;
             directionY = (r.nextInt(2) == 0) ? -MOVEMENT : MOVEMENT;
-            directionX *= deltaTime;
-            directionY *= deltaTime;
+//            directionX *= deltaTime;
+//            directionY *= deltaTime;
         }
-        this.x += directionX;
-        this.y += directionY;
+        this.x += directionX * deltaTime;
+        this.y += directionY * deltaTime;
 
         if (this.originX > this.x) this.x = this.originX;
         if ((this.originX + movementBound) < this.x) this.x = this.originX + movementBound;
