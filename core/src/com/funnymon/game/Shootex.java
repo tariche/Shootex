@@ -11,17 +11,17 @@ public class Shootex extends Game {
     public static final int WIDTH = 480;
     public static final int HEIGHT = 800;
     public static final String title = "Shootex";
-    public static RandomlyMovingObject cloud1;
-    public static RandomlyMovingObject cloud2;
-    public static RandomlyMovingObject hotAirBallon;
+    static RandomlyMovingObject cloud1;
+    static RandomlyMovingObject cloud2;
+    static RandomlyMovingObject hotAirBallon;
 
-    public SpriteBatch batch;
-//    public BitmapFont font;
-    public BitmapFont font30;
-    public BitmapFont font40;
-    public FreeTypeFontGenerator generator;
+    SpriteBatch batch;
+//    BitmapFont font;
+    BitmapFont font30;
+    BitmapFont font40;
+    FreeTypeFontGenerator generator;
 
-    public static IActivityRequestHandler myRequestHandler;
+    static IActivityRequestHandler myRequestHandler;
 
     public Shootex(IActivityRequestHandler handler) {
         myRequestHandler = handler;

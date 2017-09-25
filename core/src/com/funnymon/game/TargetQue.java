@@ -1,7 +1,5 @@
 package com.funnymon.game;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,19 +8,19 @@ import java.util.Random;
  * Created by tarik on 3/13/17.
  */
 
-public class TargetQue {
-    private int TARGETSPEED = 60;
+class TargetQue {
+    private final int TARGETSPEED = 60;
     List<Target> targets = new ArrayList<Target>(10);
-    Random r = new Random();
+    private Random r = new Random();
     int success = 0;
 
-    public TargetQue() {
+    TargetQue() {
         for (int i = 0; i < 10; i++) {
             targets.add(new Target(480 + i * 48, r.nextBoolean()));
         }
     }
 
-    public void move(float deltaTime) {
+    void move(float deltaTime) {
         for (int i = 0; i < 10; i++) {
             Target target = targets.get(i);
             target.x -= TARGETSPEED * deltaTime;
@@ -39,7 +37,7 @@ public class TargetQue {
         }
     }
 
-    public boolean targetEcsaped() {
+    boolean targetEcsaped() {
         for (int i = 0; i < 10; i++) {
             Target target = targets.get(i);
             if (target.isVisible && (target.x + 48) < 200) {
@@ -49,7 +47,7 @@ public class TargetQue {
         return false;
     }
 
-    public boolean checkCollision(Bullet bullet) {
+    boolean checkCollision(Bullet bullet) {
         for (int i = 0; i < 10; i++) {
             Target target = targets.get(i);
             if (target.inRange) {
@@ -79,7 +77,7 @@ public class TargetQue {
             }
     }
 
-//    public void speedUpTargets() {
+//    void speedUpTargets() {
 //        if (TARGETSPEED < 60) {
 //            TARGETSPEED += 2;
 //            System.out.println(TARGETSPEED);

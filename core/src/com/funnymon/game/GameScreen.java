@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Created by tarik on 3/13/17.
@@ -29,25 +29,24 @@ class GameScreen implements Screen {
 
     private World world;
     private int oldScore = 0;
-    int queueLen;
+//    int queueLen;
     private String printScore = "0";
-    private static final String TEXTSCORE = "SCORE: ";
-    private static final String TEXTHIGHSCORE = "TOP SCORE: ";
-    private TextureAtlas textureAtlas;
+//    private static final String TEXTSCORE = "SCORE: ";
+//    private static final String TEXTHIGHSCORE = "TOP SCORE: ";
+//    private TextureAtlas textureAtlas;
     private Animation<TextureRegion> animation;
     private int letterHight;
     private boolean fire;
 
     private float scoreCount;
-    private String gameOverScore = new String();
 
     GameScreen(final Shootex game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Shootex.WIDTH, Shootex.HEIGHT);
         world = new World();
-        queueLen = world.targetQue.targets.size();
-        textureAtlas = new TextureAtlas(Gdx.files.internal("target/targets.atlas"));
+//        queueLen = world.targetQue.targets.size();
+        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("target/targets.atlas"));
         animation = new Animation<TextureRegion>(0.05f, textureAtlas.getRegions());
         letterHight = (int) game.font30.getCapHeight();
         fire = false;
@@ -78,9 +77,9 @@ class GameScreen implements Screen {
             game.batch.draw(Assets.airGun, 152, 0);
         }
         game.batch.draw(Assets.cactus, 340, 300);
-        game.batch.draw(Assets.cloud, Shootex.cloud1.x, Shootex.cloud1.y);
-        game.batch.draw(Assets.cloud, Shootex.cloud2.x, Shootex.cloud2.y);
-        game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.x, Shootex.hotAirBallon.y);
+        game.batch.draw(Assets.cloud, Shootex.cloud1.getX(), Shootex.cloud1.getY());
+        game.batch.draw(Assets.cloud, Shootex.cloud2.getX(), Shootex.cloud2.getY());
+        game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.getX(), Shootex.hotAirBallon.getY());
 
         if (status == GameStatus.GameOver) {
             drawGameOver(delta);
@@ -90,9 +89,9 @@ class GameScreen implements Screen {
 
         game.batch.end();
 
-        Shootex.cloud1.move();
-        Shootex.cloud2.move();
-        Shootex.hotAirBallon.move();
+        Shootex.cloud1.move(delta);
+        Shootex.cloud2.move(delta);
+        Shootex.hotAirBallon.move(delta);
 
         Vector3 touchPos = new Vector3();
         if (Gdx.input.justTouched()) {
@@ -150,9 +149,9 @@ class GameScreen implements Screen {
 
 
     private void drawRunning(float delta) {
-        Iterator<Target> iter = world.targetQue.targets.iterator();
-        while (iter.hasNext()) {
-            Target target = iter.next();
+//        Iterator<Target> iter = world.targetQue.targets.iterator();
+        for (Target target :
+                world.targetQue.targets) {
             if (target.isVisible) {
                 game.batch.draw(Assets.target, target.x, target.y);
             }
@@ -165,6 +164,20 @@ class GameScreen implements Screen {
                 target.isShot = false;
             }
         }
+        /*while (iter.hasNext()) {
+            Target target = iter.next();
+            if (target.isVisible) {
+                game.batch.draw(Assets.target, target.x, target.y);
+            }
+            if (target.isShot) {
+                target.elapsedTime += delta;
+                game.batch.draw(animation.getKeyFrame(target.elapsedTime, false), target.x, target.y);
+            }
+            if (animation.isAnimationFinished(target.elapsedTime)) {
+                target.elapsedTime = 0;
+                target.isShot = false;
+            }
+        }*/
 
         int bulletsLen = world.bullets.size();
         if (bulletsLen != 0) {
@@ -182,7 +195,7 @@ class GameScreen implements Screen {
             printScore = "" + oldScore;
         }
         game.font30.setColor(Color.YELLOW);
-        game.font30.draw(game.batch, String.format("%04d", Settings.highScore), 20 , 780);
+        game.font30.draw(game.batch, String.format(Locale.US, "%04d", Settings.highScore), 20 , 780);
         game.font40.draw(game.batch, printScore, 20, 770 - letterHight);
     }
 
@@ -192,11 +205,11 @@ class GameScreen implements Screen {
         game.batch.draw(Assets.gameover, 165, 226);
     }
 
-    public void drawFinalScore(float delta) {
+    private void drawFinalScore(float delta) {
         scoreCount = Math.min((scoreCount + delta*100), (float)oldScore);
-        gameOverScore = String.format("%04d", (int)scoreCount);
+        String gameOverScore = String.format(Locale.US, "%04d", (int)scoreCount);
         GlyphLayout layout = new GlyphLayout(game.font40, gameOverScore);
-        int positionX = game.WIDTH/2-(int)(layout.width/2);
+        int positionX = Shootex.WIDTH/2-(int)(layout.width/2);
         game.font40.draw(game.batch, gameOverScore, positionX, 700);
     }
 

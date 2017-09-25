@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 class LoadScreen implements Screen {
     final Shootex game;
 
-    public LoadScreen(final Shootex game) {
+    LoadScreen(final Shootex game) {
         this.game = game;
 
         Assets.background = new Texture(Gdx.files.internal("background.png"));

@@ -12,12 +12,12 @@ import com.badlogic.gdx.math.Vector3;
 
 class HelpScreen implements Screen {
     final Shootex game;
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
 
-    public HelpScreen(final Shootex game) {
+    HelpScreen(final Shootex game) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.WIDTH, game.HEIGHT);
+        camera.setToOrtho(false, Shootex.WIDTH, Shootex.HEIGHT);
     }
 
     @Override
@@ -41,8 +41,8 @@ class HelpScreen implements Screen {
 
         game.batch.end();
 
-        Shootex.cloud1.move();
-        Shootex.cloud2.move();
+        Shootex.cloud1.move(delta);
+        Shootex.cloud2.move(delta);
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3();

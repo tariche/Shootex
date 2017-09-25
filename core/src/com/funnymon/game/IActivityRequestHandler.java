@@ -5,5 +5,5 @@ package com.funnymon.game;
  */
 
 public interface IActivityRequestHandler {
-    public void showAds(boolean show);
+    void showAds(boolean show);
 }

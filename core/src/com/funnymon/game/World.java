@@ -12,16 +12,16 @@ public class World {
 
     TargetQue targetQue;
     List<Bullet> bullets = new ArrayList<Bullet>();
-    public boolean gameOver = false;
-    public boolean shot = false;
-    public int score = 0;
+    boolean gameOver = false;
+    boolean shot = false;
+    int score = 0;
 //    public int speedFactor = 0;
 
     public World() {
         targetQue = new TargetQue();
     }
 
-    public void update(float deltaTime) {
+    void update(float deltaTime) {
         targetQue.move(deltaTime);
 
         if (shot) {
@@ -59,7 +59,7 @@ public class World {
 
     }
 
-    public void updateScore() {
+    private void updateScore() {
         if (Settings.highScore < score) {
             Settings.highScore = score;
         }

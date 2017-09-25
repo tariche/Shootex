@@ -39,9 +39,9 @@ class ManiMenuScreen implements Screen {
         game.batch.draw(Assets.background, 0, 0);
         game.batch.draw(Assets.airGun, 152, 0);
         game.batch.draw(Assets.cactus, 340, 300);
-        game.batch.draw(Assets.cloud, Shootex.cloud1.x, Shootex.cloud1.y);
-        game.batch.draw(Assets.cloud, Shootex.cloud2.x, Shootex.cloud2.y);
-        game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.x, Shootex.hotAirBallon.y);
+        game.batch.draw(Assets.cloud, Shootex.cloud1.getX(), Shootex.cloud1.getY());
+        game.batch.draw(Assets.cloud, Shootex.cloud2.getX(), Shootex.cloud2.getY());
+        game.batch.draw(Assets.hotAirBaloon, Shootex.hotAirBallon.getX(), Shootex.hotAirBallon.getY());
 //        game.batch.draw(Assets.hotAirBaloon, 64, 480);
         game.batch.draw(Assets.name, 130, 480);
         game.batch.draw(Assets.mainmenu, 100, 210);
@@ -53,9 +53,9 @@ class ManiMenuScreen implements Screen {
 
         game.batch.end();
 
-        Shootex.cloud1.move();
-        Shootex.cloud2.move();
-        Shootex.hotAirBallon.move();
+        Shootex.cloud1.move(delta);
+        Shootex.cloud2.move(delta);
+        Shootex.hotAirBallon.move(delta);
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3();

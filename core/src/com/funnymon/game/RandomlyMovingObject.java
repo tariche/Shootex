@@ -1,67 +1,74 @@
 package com.funnymon.game;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.Random;
 
 /**
  * Created by tarik on 3/19/17.
  */
 
-public class RandomlyMovingObject {
-    public float originX;
-    public float originY;
-    public float x;
-    public float y;
-    public int movementBound = 80;
-    public final static float MOVEMENT = 5;
-    Random r;
-    private int ran;
-    public float deltaTime;
-    public float calculateDirection;
-    public float directionX;
-    public float directionY;
+class RandomlyMovingObject {
+    private float originX;
+    private float originY;
+    private float x;
+    private float y;
+    private int movementBound = 80;
+    private final static float MOVEMENT = 5;
+    private Random r;
+//    private int ran;
+//    private float deltaTime;
+    private float calculateDirection;
+    private float directionX;
+    private float directionY;
 
-    public RandomlyMovingObject(float x, float y) {
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    RandomlyMovingObject(float x, float y) {
         this.x = x; // + movementBound/2;
         this.y = y; // + movementBound/2;
         this.originX = x;
         this.originY = y;
         r = new Random();
-        ran = 0;
-        deltaTime = 0f;
+//        ran = 0;
+//        deltaTime = 0f;
         calculateDirection = 0f;
         directionX = 0f;
         directionY = 0f;
     }
 
-    public RandomlyMovingObject(float x, float y, int movementBound){
+    RandomlyMovingObject(float x, float y, int movementBound){
         this.movementBound = movementBound;
         this.x = x; // + movementBound/2;
         this.y = y; // + movementBound/2;
         this.originX = x;
         this.originY = y;
         r = new Random();
-        ran = 0;
-        deltaTime = 0f;
+//        ran = 0;
+//        deltaTime = 0f;
         calculateDirection = 0f;
         directionX = 0f;
         directionY = 0f;
     }
 
-    public void move() {
-        deltaTime = Gdx.graphics.getDeltaTime();
-        calculateDirection += MOVEMENT*deltaTime;
+    void move(float deltaTime) {
+//        deltaTime = Gdx.graphics.getDeltaTime();
+        float step = MOVEMENT*deltaTime;
+        calculateDirection += step;
 //        ran = r.nextInt(3);
         if (calculateDirection > MOVEMENT) {
             calculateDirection = 0;
-            directionX = (r.nextInt(2) == 0) ? -MOVEMENT : MOVEMENT;
-            directionY = (r.nextInt(2) == 0) ? -MOVEMENT : MOVEMENT;
+            directionX = (r.nextInt(2) == 0) ? -1 : 1;
+            directionY = (r.nextInt(2) == 0) ? -1 : 1;
 //            directionX *= deltaTime;
 //            directionY *= deltaTime;
         }
-        this.x += directionX * deltaTime;
-        this.y += directionY * deltaTime;
+        this.x += directionX * step;
+        this.y += directionY * step;
 
         if (this.originX > this.x) this.x = this.originX;
         if ((this.originX + movementBound) < this.x) this.x = this.originX + movementBound;
